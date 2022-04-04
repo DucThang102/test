@@ -1,0 +1,94 @@
+@import '~antd/dist/antd.css';
+.app {
+  height: 100%;
+  margin: 0;
+  padding: 0 170px;
+  background-color: #222221;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.text-center {
+  text-align: center;
+  justify-content: center;
+}
+
+.item-center {
+  align-items: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.largest-tx-title {
+  color: #ffffff;
+  text-align: center;
+  padding-top: 40px;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.largest-tx-val {
+  color: #ffffff;
+  text-align: center;
+  font-size: 20px;
+}
+
+.calculate-result {
+  padding-top: 30px;
+}
+
+.img-coin {
+  width: 32px;
+  margin-right: 10px;
+}
+
+.title-transaction {
+  color: #F0D042;
+  font-size: 20px;
+}
+
+.total-transaction {
+  font-size: 48px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.avg-block-time {
+  font-size: 20px;
+  color: #31B4D9;
+  font-weight: bold;
+}
+
+.avg-eth {
+  font-size: 20px;
+  color: #1F8B24;
+  font-weight: bold;
+}
+
+.list-items {
+  float: left
+}

@@ -1,0 +1,64 @@
+@import '../App.css';
+.item {
+    background-color: #414141;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 12px;
+    width: calc(100vw / 4);
+}
+.cover-container {
+    position: relative;
+    border-radius: 12px;
+}
+
+.cover-photo {
+    height: 172px;
+    width: 100%;
+    border-radius: 12px;
+}
+.photo {
+    height: 67px;
+    width: 67px;
+    border-radius: 12px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+.status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #238FAB;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+.name{
+    font-size: 34px;
+    color: white;
+    font-weight: bold;
+}
+
+.icon-network {
+    margin-top: 15px;
+}
+
+.symbol {
+    color: white;
+    font-size: 16px;
+}
+
+.total-raise {
+    color: white;
+    font-size: 20px;
+}
+
+.total-raise-title {
+    color: white;
+    font-size: 14px;
+}
+
+.date {
+    justify-content: flex-end;
+}
