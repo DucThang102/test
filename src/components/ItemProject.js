@@ -1,8 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import './styles.css';
-const ItemProject = ({data}) => {
+import * as moment from "moment"
 
+const ItemProject = ({data}) => {
     return (
         <div className='item'>
             <div className='cover-container'>
@@ -25,7 +26,7 @@ const ItemProject = ({data}) => {
             </div>
             <div className='flex-row date'>
                 <div className='total-raise-title'>IDO starts on </div>
-                <div className='total-raise-title'> {data?.startOn}</div>
+                <div className='total-raise-title'>{` ${moment(data?.startOn).format("MMMM Do YYYY")}`}</div>
             </div>
         </div>
     )

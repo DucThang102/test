@@ -5,6 +5,7 @@ import Web3 from 'web3';
 import { Form, Input, Button, Slider } from 'antd';
 import ItemProject from './components/ItemProject';
 import { getFundedProjects } from "./services/ProjectServices"
+const abiDecoder = require('abi-decoder');
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const [fundedProjects, setFundedProjects] = useState([])
   const [totalRecord, setTotalRecord] = useState(0)
   const [totalTransactions, setTotalTransactions] = useState(0)
+  const [avgBlockTime, setAvgBlockTime] = useState(0)
 
   useEffect(() => {
     getBlockTransactions()
@@ -35,28 +37,44 @@ function App() {
   }
 
   const onSubmitFilter = () => {
-    console.log("filter ", filters);
     loadProjects(filters)
   }
 
   const getBlockTransactions = async () => {
     const PROVIDER = 'https://rinkeby.infura.io/v3/e5b97339938341618b45e7e0d7e7d225'
     const web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER))
-  
+
     const fromBlock = 10441830
     const toBlock = 10441840
-  
+
     let totalTx = 0
-    let totalEther = 0
+
     for (let block = fromBlock; block <= toBlock; block++) {
       let txs = await web3.eth.getBlock(block, true)
 
-      totalTx += txs.transactions.length
-    }
 
+      totalTx += txs.transactions.length
+        
+
+      txs.transactions.forEach(tx => {
+        
+        // if (tx.input != '0x') {
+        const decodeData = abiDecoder.decodeMethod(tx.input, (err, res) => {
+          if (err) {
+            console.log("errrrr", err);
+            return
+          } else {
+            console.log("xxxx ", res);
+            return res
+          }
+        })
+        console.log("decodeData ", decodeData);
+        // }
+      }
+      )
+    }
     setTotalTransactions(totalTx)
-  
-   
+
   }
 
   return (
@@ -76,7 +94,7 @@ function App() {
             <img className='img-coin' src='img/Coin.png'></img>
             <p className='avg-block-time'>AVG of block time</p>
           </div>
-          <p className='total-transaction text-center'>79</p>
+          <p className='total-transaction text-center'>{avgBlockTime}</p>
         </div>
         <div className='flex-1 flex-col text-center'>
           <div className='flex-row item-center text-center'>
@@ -95,17 +113,17 @@ function App() {
           <Form.Item
             className='flex-1 pr-10'
             label="Name">
-            <Input onChange={(e) => setFilters({...filters, name: e.target.value})} placeholder="input name" />
+            <Input onChange={(e) => setFilters({ ...filters, name: e.target.value })} placeholder="input name" />
           </Form.Item>
           <Form.Item
             className='flex-1 pr-10'
             label="Symbol">
-            <Input onChange={(e) => setFilters({...filters, symbol: e.target.value})} placeholder="input symbol" />
+            <Input onChange={(e) => setFilters({ ...filters, symbol: e.target.value })} placeholder="input symbol" />
           </Form.Item>
           <Form.Item
             className='flex-1 pr-10'
             label="Status">
-            <Input placeholder="input status" onChange={(e) => setFilters({...filters, status: e.target.value})} />
+            <Input placeholder="input status" onChange={(e) => setFilters({ ...filters, status: e.target.value })} />
           </Form.Item>
           <Form.Item
             className='flex-1 pr-10'
