@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import './App.css';
-import Web3 from 'web3';
 import { Form, Input, Button, Slider } from 'antd';
 import ItemProject from './components/ItemProject';
-import { getFundedProjects } from "./services/ProjectServices"
-const abiDecoder = require('abi-decoder');
-
+import { getFundedProjects, calculateTransactionsBlock } from "./services/ProjectServices"
 
 function App() {
   const [formFilter] = Form.useForm();
@@ -19,9 +16,11 @@ function App() {
   const [totalRecord, setTotalRecord] = useState(0)
   const [totalTransactions, setTotalTransactions] = useState(0)
   const [avgBlockTime, setAvgBlockTime] = useState(0)
+  const [avgEthTransaction, setAvgEthTransaction] = useState(0)
+  const [secondMaxTx, setSecondMaxTx] = useState()
 
   useEffect(() => {
-    getBlockTransactions()
+    statisticTransactions()
     loadProjects(filters)
   }, [])
 
@@ -40,47 +39,20 @@ function App() {
     loadProjects(filters)
   }
 
-  const getBlockTransactions = async () => {
-    const PROVIDER = 'https://rinkeby.infura.io/v3/e5b97339938341618b45e7e0d7e7d225'
-    const web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER))
+  const statisticTransactions = async () => {
+    let result = await calculateTransactionsBlock()
 
-    const fromBlock = 10441830
-    const toBlock = 10441840
-
-    let totalTx = 0
-
-    for (let block = fromBlock; block <= toBlock; block++) {
-      let txs = await web3.eth.getBlock(block, true)
-
-
-      totalTx += txs.transactions.length
-        
-
-      txs.transactions.forEach(tx => {
-        
-        // if (tx.input != '0x') {
-        const decodeData = abiDecoder.decodeMethod(tx.input, (err, res) => {
-          if (err) {
-            console.log("errrrr", err);
-            return
-          } else {
-            console.log("xxxx ", res);
-            return res
-          }
-        })
-        console.log("decodeData ", decodeData);
-        // }
-      }
-      )
-    }
-    setTotalTransactions(totalTx)
-
+    console.log("statisticTransactions", result);
+    setTotalTransactions(result.totalTransactions)
+    setAvgEthTransaction(result.avgEthPerTx)
+    setSecondMaxTx(result.secondMax)
+    setAvgBlockTime(result.avgBlockTime.toFixed(2))
   }
 
   return (
     <div className='app'>
       <p className='largest-tx-title'>2nd largest  of Transactions:</p>
-      <p className='largest-tx-val'>1.10 ETH</p>
+      <p className='largest-tx-val'>{secondMaxTx?.ether.toFixed(5) || 0} ETH</p>
       <div className='flex-row calculate-result'>
         <div className='flex-1 flex-col text-center'>
           <div className='flex-row item-center text-center'>
@@ -101,7 +73,7 @@ function App() {
             <img className='img-coin' src='img/Coin.png'></img>
             <p className='avg-eth'>AVG of ETH/transactions</p>
           </div>
-          <p className='total-transaction text-center'>79</p>
+          <p className='total-transaction text-center'>{avgEthTransaction}</p>
         </div>
       </div>
       <div className='form-filter'>
