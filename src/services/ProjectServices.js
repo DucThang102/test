@@ -1,5 +1,6 @@
 import axios from "axios";
 import Web3 from 'web3';
+import {ethers} from 'ethers';
 import ERC20ABI from "../contract-abis/ERC20.json"
 const abiDecoder = require('abi-decoder');
 
@@ -7,11 +8,16 @@ export const getFundedProjects = (filter) => {
     return axios.post("http://139.99.62.190:8000/api/v1/fund_projects/filter ", { ...filter })
 }
 
+export const getTransactionsByEther =  async () => {
+    const provider = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_PROVIDER)
+    const blockTx = await provider.getBlockWithTransactions(10441830)
+    console.log("blockTx ", blockTx);
+}
+
 export const calculateTransactionsBlock = async () => {
     abiDecoder.addABI(ERC20ABI)
 
-    const PROVIDER = 'https://rinkeby.infura.io/v3/e5b97339938341618b45e7e0d7e7d225'
-    const web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER))
+    const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_PROVIDER))
 
     const fromBlock = 10441830
     const toBlock = 10441840

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Form, Input, Button, Slider } from 'antd';
 import ItemProject from './components/ItemProject';
-import { getFundedProjects, calculateTransactionsBlock } from "./services/ProjectServices"
+import { getFundedProjects, calculateTransactionsBlock, getTransactionsByEther } from "./services/ProjectServices"
 
 function App() {
   const [formFilter] = Form.useForm();
